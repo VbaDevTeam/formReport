@@ -45,12 +45,8 @@ namespace formReport
         myOriginData.myDoubleListIn.Add(Convert.ToDouble(exFileData.Worksheets["originData"].Cells[n, myColumnExCan1].Value));
         myOriginData.myDoubleListOut.Add(Convert.ToDouble(exFileData.Worksheets["originData"].Cells[n, myColumnExCan2].Value));
         //insertRow(ref dgvLista, myData);
-
       }
-
       exFileData.ClosePreservedXlsx();
-      MessageBox.Show("Dati caricati con successo!");
-
     }
 
     private void btnClick(object sender, EventArgs e)
@@ -104,9 +100,7 @@ namespace formReport
         }
       }
       scriviExcelNew(myListDef);
-      MessageBox.Show("Report generato!");
-
-    }
+   }
 
     public int scriviExcelNew(List<puntoAcq> myList)
     {
@@ -126,7 +120,7 @@ namespace formReport
         xFile.LoadXlsx(@"C:\REM\Settings\0387\Modelli\modello_report.xlsx", XlsxOptions.PreserveMakeCopy);
 
         int nRiga = 0;
-        int nColonna = 1;
+        int nColonna = 0;
         double millisecondToAdd = 0.0;
 
 
@@ -139,19 +133,22 @@ namespace formReport
 
             DateTime myDt = myList[n].timeSt;
             DateTime apptDFt = myDt.AddMilliseconds(millisecondToAdd);
-            xFile.Worksheets["data"].Cells[nRiga + 1, nColonna++].Value = myList[n].idCiclo;
-            xFile.Worksheets["data"].Cells[nRiga + 1, nColonna++].Value = myList[n].idAcq;
-            xFile.Worksheets["data"].Cells[nRiga + 1, nColonna++].Value = apptDFt;
-            xFile.Worksheets["data"].Cells[nRiga + 1, nColonna++].Value = myList[n].pressIn;
-            xFile.Worksheets["data"].Cells[nRiga + 1, nColonna++].Value = myList[n].pressOut;
-            xFile.Worksheets["data"].Cells[nRiga + 1, nColonna++].Value = myList[n].tempFluidoIn;
-            xFile.Worksheets["data"].Cells[nRiga + 1, nColonna++].Value = myList[n].tempFluidoOut;
-            xFile.Worksheets["data"].Cells[nRiga + 1, nColonna++].Value = myList[n].tempCella;
-            xFile.Worksheets["data"].Cells[nRiga + 1, nColonna++].Value = millisecondToAdd;
-            xFile.Worksheets["data"].Cells[nRiga + 1, nColonna++].Value = myList[n].portFluido;
-            xFile.Worksheets["data"].Cells[nRiga + 1, nColonna++].Value = myList[n].note;
-            xFile.Worksheets["data"].Cells[nRiga + 1, nColonna++].Value = myList[n].myDoubleListIn[y];
-            xFile.Worksheets["data"].Cells[nRiga + 1, nColonna++].Value = myList[n].myDoubleListOut[y];
+
+
+
+            xFile.Worksheets["data"].Cells[nRiga + 1, 1 ].Value = myList[n].idCiclo;
+            xFile.Worksheets["data"].Cells[nRiga + 1, 2 ].Value = myList[n].idAcq;
+            xFile.Worksheets["data"].Cells[nRiga + 1, 3 ].Value = apptDFt;
+            xFile.Worksheets["data"].Cells[nRiga + 1, 4 ].Value = myList[n].pressIn;
+            xFile.Worksheets["data"].Cells[nRiga + 1, 5 ].Value = myList[n].pressOut;
+            xFile.Worksheets["data"].Cells[nRiga + 1, 6 ].Value = myList[n].tempFluidoIn;
+            xFile.Worksheets["data"].Cells[nRiga + 1, 7 ].Value = myList[n].tempFluidoOut;
+            xFile.Worksheets["data"].Cells[nRiga + 1, 8 ].Value = myList[n].tempCella;
+            xFile.Worksheets["data"].Cells[nRiga + 1, 9 ].Value = millisecondToAdd;
+            xFile.Worksheets["data"].Cells[nRiga + 1, 10].Value = myList[n].portFluido;
+            xFile.Worksheets["data"].Cells[nRiga + 1, 11].Value = myList[n].note;
+            xFile.Worksheets["data"].Cells[nRiga + 1, 12].Value = myList[n].myDoubleListIn[y];
+            xFile.Worksheets["data"].Cells[nRiga + 1, 13].Value = myList[n].myDoubleListOut[y];
             millisecondToAdd = millisecondToAdd + 20.0;
             nRiga++;
           }
