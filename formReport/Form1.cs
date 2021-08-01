@@ -20,7 +20,6 @@ namespace formReport
     string dataInit = "2021-04-25 18:30:35";
     string dataEnd = "2021-05-30 00:00:00";
 
-
     public Form1()
     {
       InitializeComponent();

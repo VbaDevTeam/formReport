@@ -125,6 +125,8 @@ namespace formReport
 public class puntoAcq
 {
   public int id;
+  public int idAcq;
+  public int idCiclo;
   public DateTime timeSt;
   public double pressIn;
   public double pressOut;
