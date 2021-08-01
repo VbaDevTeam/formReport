@@ -341,7 +341,7 @@ namespace formReport
             v.NoXml.xFile.Worksheets["data"].Cells[nRiga + 1, 11].Value = myList[n].note;
             v.NoXml.xFile.Worksheets["data"].Cells[nRiga + 1, 12].Value = myList[n].myDoubleListIn[y];
             v.NoXml.xFile.Worksheets["data"].Cells[nRiga + 1, 13].Value = myList[n].myDoubleListOut[y];
-            millisecondToAdd = millisecondToAdd + 20.0;
+            millisecondToAdd = millisecondToAdd + 50.0;
             nRiga++;
           }
 

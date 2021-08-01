@@ -18,7 +18,8 @@ namespace formReport
   {
     private ExcelFile exFileData;
     private int nElementi = 40;
-    private int nMinuti = 863;
+    private double fsPress = 3.51;
+    private int nMinuti = 3;
     private int nCicliMIn = 30;
     private string pathExFile = @"C:\REM\Settings\0387\Report\Test.xlsx";
     private puntoAcq myOriginData = new puntoAcq();
@@ -44,7 +45,7 @@ namespace formReport
         myData = exFileData.Worksheets["originData"].Cells[n, myColumnExCan1].Value.ToString();
         myOriginData.myDoubleListIn.Add(Convert.ToDouble(exFileData.Worksheets["originData"].Cells[n, myColumnExCan1].Value));
         myOriginData.myDoubleListOut.Add(Convert.ToDouble(exFileData.Worksheets["originData"].Cells[n, myColumnExCan2].Value));
-        //insertRow(ref dgvLista, myData);
+        insertRow(ref dgvLista, myData);
       }
       exFileData.ClosePreservedXlsx();
     }
@@ -81,19 +82,42 @@ namespace formReport
     {
       myListDef.Clear();
 
+      double percTolleranza = 0.025;
+ 
+      double fsPressDin = fsPress;
+      double fsPressSup = fsPress * (1 + percTolleranza);
+      double fsPressInf = fsPress * (1 - percTolleranza);
+
+
+
       int dimElementi = nMinuti * nCicliMIn;
       string myData = "";
+      Random random = new Random();
+
       for (int p = 0; p <= dimElementi; p++)
       {
         for (int n = 0; n < myOriginData.myDoubleListIn.Count; n++)
         {
           puntoAcq tmp = new puntoAcq();
-          Random random = new Random();
           //myData = myOriginData.myDoubleListIn[n].ToString();
           tmp.idCiclo = n;
           tmp.idAcq = p;
-          tmp.myDoubleListIn.Add(myOriginData.myDoubleListIn[n] + Convert.ToDouble(random.Next(random.Next(1, 150), 10000) / 10000));
-          tmp.myDoubleListOut.Add(myOriginData.myDoubleListOut[n] + Convert.ToDouble(random.Next(random.Next(1, 80), 10000) / 10000));
+          int myInitRandom = random.Next(1, 10000) - 5000;
+          double myRandom = Convert.ToDouble(myInitRandom) / 100000.0;
+
+          fsPressDin += myRandom;
+
+          if (fsPressDin > fsPressSup)
+          {
+            fsPressDin -= percTolleranza / 10;
+          }
+          if (fsPressDin < fsPressInf)
+          {
+            fsPressDin += percTolleranza / 10;
+          }
+
+          tmp.myDoubleListIn.Add(fsPressDin * myOriginData.myDoubleListIn[n]);
+          tmp.myDoubleListOut.Add(fsPressDin * myOriginData.myDoubleListOut[n]);
           myListDef.Add(tmp);
 
           //insertRow(ref dgvListaCreate, myData);
@@ -149,7 +173,7 @@ namespace formReport
             xFile.Worksheets["data"].Cells[nRiga + 1, 11].Value = myList[n].note;
             xFile.Worksheets["data"].Cells[nRiga + 1, 12].Value = myList[n].myDoubleListIn[y];
             xFile.Worksheets["data"].Cells[nRiga + 1, 13].Value = myList[n].myDoubleListOut[y];
-            millisecondToAdd = millisecondToAdd + 20.0;
+            millisecondToAdd = millisecondToAdd + 50.0;
             nRiga++;
           }
 
